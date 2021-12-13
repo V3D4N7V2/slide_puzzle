@@ -35,7 +35,7 @@ class _PuzzleSimple extends Puzzle {
   int get length => _source.length;
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(other) {
     if (other is Puzzle &&
         other.width == width &&
         other.length == _source.length) {

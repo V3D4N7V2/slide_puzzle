@@ -6,12 +6,14 @@ import 'src/core/puzzle_animator.dart';
 import 'src/flutter.dart';
 import 'src/puzzle_home_state.dart';
 
-void main() => runApp(const PuzzleApp());
+void main() => runApp(PuzzleApp());
 
 class PuzzleApp extends StatelessWidget {
   final int rows, columns;
 
-  const PuzzleApp({this.columns = 4, this.rows = 4});
+  PuzzleApp({int columns = 4, int rows = 4})
+      : columns = columns ?? 4,
+        rows = rows ?? 4;
 
   @override
   Widget build(BuildContext context) => MaterialApp(

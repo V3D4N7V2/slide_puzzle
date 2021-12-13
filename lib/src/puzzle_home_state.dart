@@ -26,8 +26,10 @@ class _PuzzleControls extends ChangeNotifier implements PuzzleControls {
 
   void _notify() => notifyListeners();
 
+  //AssetImage backg = AssetImage('asset/seattle.jpg');
+
   @override
-  void Function(bool? newValue)? get setAutoPlayFunction {
+  void Function(bool newValue) get setAutoPlayFunction {
     if (_parent.puzzle.solved) {
       return null;
     }
@@ -53,12 +55,12 @@ class PuzzleHomeState extends State
   final _AnimationNotifier animationNotifier = _AnimationNotifier();
 
   Duration _tickerTimeSinceLastEvent = Duration.zero;
-  late Ticker _ticker;
-  late Duration _lastElapsed;
-  late StreamSubscription _puzzleEventSubscription;
+  Ticker _ticker;
+  Duration _lastElapsed;
+  StreamSubscription _puzzleEventSubscription;
 
   bool _autoPlay = false;
-  late _PuzzleControls _autoPlayListenable;
+  _PuzzleControls _autoPlayListenable;
 
   PuzzleHomeState(this.puzzle) {
     _puzzleEventSubscription = puzzle.onEvent.listen(_onPuzzleEvent);
@@ -68,17 +70,16 @@ class PuzzleHomeState extends State
   void initState() {
     super.initState();
     _autoPlayListenable = _PuzzleControls(this);
-    _ticker = createTicker(_onTick);
-    _lastElapsed = Duration.zero;
+    _ticker ??= createTicker(_onTick);
     _ensureTicking();
   }
 
-  void _setAutoPlay(bool? newValue) {
+  void _setAutoPlay(bool newValue) {
     if (newValue != _autoPlay) {
       setState(() {
         // Only allow enabling autoPlay if the puzzle is not solved
         _autoPlayListenable._notify();
-        _autoPlay = newValue! && !puzzle.solved;
+        _autoPlay = newValue && !puzzle.solved;
         if (_autoPlay) {
           _ensureTicking();
         }
@@ -91,21 +92,18 @@ class PuzzleHomeState extends State
         providers: [
           Provider<AppState>.value(value: this),
           ListenableProvider<PuzzleControls>.value(
-            value: _autoPlayListenable,
+            listenable: _autoPlayListenable,
           )
         ],
         child: Material(
           child: Stack(
-            children: const <Widget>[
-              SizedBox.expand(
+            children: <Widget>[
+              const SizedBox.expand(
                 child: FittedBox(
                   fit: BoxFit.cover,
-                  child: Image(
-                    image: AssetImage('asset/seattle.jpg'),
-                  ),
                 ),
               ),
-              LayoutBuilder(builder: _doBuild),
+              const LayoutBuilder(builder: _doBuild),
             ],
           ),
         ),
@@ -114,8 +112,8 @@ class PuzzleHomeState extends State
   @override
   void dispose() {
     animationNotifier.dispose();
-    _ticker.dispose();
-    _autoPlayListenable.dispose();
+    _ticker?.dispose();
+    _autoPlayListenable?.dispose();
     _puzzleEventSubscription.cancel();
     super.dispose();
   }
@@ -159,7 +157,7 @@ class PuzzleHomeState extends State
     } else {
       if (!_autoPlay) {
         _ticker.stop();
-        _lastElapsed = Duration.zero;
+        _lastElapsed = null;
       }
     }
 
@@ -201,9 +199,16 @@ Widget _doBuild(BuildContext _, BoxConstraints constraints) =>
 Widget _doBuildCore(bool small) => ValueTabController<SharedTheme>(
       values: themes,
       child: Consumer<SharedTheme>(
-        builder: (_, theme, __) => AnimatedContainer(
-          duration: puzzleAnimationDuration,
-          color: theme.puzzleThemeBackground,
+        builder: (_, theme, __) => Container(
+          //builder: (_, theme, __) => AnimatedContainer(
+          //duration: puzzleAnimationDuration,
+          //color: theme.puzzleThemeBackground,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: theme.image,
+              fit: BoxFit.fill,
+            ),
+          ),
           child: Center(
             child: theme.styledWrapper(
               small,

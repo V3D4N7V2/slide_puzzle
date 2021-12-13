@@ -6,7 +6,7 @@ import 'core/puzzle_proxy.dart';
 import 'flutter.dart';
 import 'shared_theme.dart';
 
-const _accentBlue = Color(0xff000579);
+const _accentBlue = Color(0xff000579e);
 
 class ThemeSimple extends SharedTheme {
   @override
@@ -22,6 +22,9 @@ class ThemeSimple extends SharedTheme {
 
   @override
   Color get puzzleAccentColor => _accentBlue;
+
+  @override
+  AssetImage get image => const AssetImage('asset/meme.jpg');
 
   @override
   RoundedRectangleBorder puzzleBorder(bool small) =>

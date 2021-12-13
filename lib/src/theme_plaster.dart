@@ -26,6 +26,9 @@ class ThemePlaster extends SharedTheme {
   Color get puzzleAccentColor => _orangeIsh;
 
   @override
+  AssetImage get image => const AssetImage('asset/meme.jpg');
+
+  @override
   RoundedRectangleBorder puzzleBorder(bool small) => RoundedRectangleBorder(
         side: const BorderSide(
           color: Color.fromARGB(255, 103, 103, 105),

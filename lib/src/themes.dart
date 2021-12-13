@@ -5,9 +5,11 @@
 import 'theme_plaster.dart';
 import 'theme_seattle.dart';
 import 'theme_simple.dart';
+import 'theme_meme.dart';
 
 const themes = [
   ThemeSimple(),
   ThemeSeattle(),
   ThemePlaster(),
+  ThemeMeme(),
 ];

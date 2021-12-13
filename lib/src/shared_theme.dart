@@ -14,6 +14,8 @@ abstract class SharedTheme {
 
   String get name;
 
+  AssetImage get image;
+
   Color get puzzleThemeBackground;
 
   RoundedRectangleBorder puzzleBorder(bool small);
@@ -28,8 +30,8 @@ abstract class SharedTheme {
 
   Ink createInk(
     Widget child, {
-    DecorationImage? image,
-    EdgeInsetsGeometry? padding,
+    DecorationImage image,
+    EdgeInsetsGeometry padding,
   }) =>
       Ink(
         padding: padding,
@@ -44,23 +46,21 @@ abstract class SharedTheme {
     bool small,
     int tileValue,
     Widget content, {
-    Color? color,
-    RoundedRectangleBorder? shape,
+    Color color,
+    RoundedRectangleBorder shape,
   }) =>
       AnimatedContainer(
         duration: puzzleAnimationDuration,
         padding: tilePadding(puzzle),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 4,
-            animationDuration: puzzleAnimationDuration,
-            shape: shape ?? puzzleBorder(small),
-            padding: const EdgeInsets.symmetric(),
-            primary: color,
-          ),
+        child: RaisedButton(
+          elevation: 4,
           clipBehavior: Clip.hardEdge,
+          animationDuration: puzzleAnimationDuration,
           onPressed: () => puzzle.clickOrShake(tileValue),
+          shape: shape ?? puzzleBorder(small),
+          padding: const EdgeInsets.symmetric(),
           child: content,
+          color: color,
         ),
       );
 
